@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Prompt Gallery{% endblock %}
+{% block content %}
+<!-- Search Form -->
+<form action="/search" method="post">
+    <input name="search" id="search" type="text">
+    <input type="submit">
+</form>
+{% endblock %}

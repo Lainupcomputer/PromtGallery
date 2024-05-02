@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/favicon.png') }}">
+    <title>{% block title %}{% endblock %}</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="{{ url_for('static', filename='script/min.js') }}"></script>
+</head>
+<body>
+<header>
+    <nav>
+        <li><button onclick="window.location.href='/'">Home</button></li>
+        <li><button onclick="window.location.href='/scan'">Scan</button></li>
+    </nav>
+    </nav>
+</header>
+{% block content %}{% endblock %}
+</body>
+</html>
