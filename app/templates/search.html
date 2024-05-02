@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Search{% endblock %}
+{% block content %}
+<!-- Search Form -->
+
+<form action="/search" method="post">
+    <input name="search" id="search" type="text">
+    <input type="submit">
+</form>
+
+<!-- Show Images -->
+<div class="image-gallery">
+    {% for image_path in q %}
+
+    <img src="{{ url_for('static', filename=image_path) }}" alt="Image">
+    {% endfor %}
+</div>
+
+{% endblock %}
