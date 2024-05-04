@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, Response
+from flask import Flask, render_template, request, redirect, Response, jsonify
 import os
 from PIL import Image
 from database import db, DImage
@@ -95,6 +95,15 @@ def create_app() -> Flask:
         results = [path[0] for path in paths]
         logger.info(f"Found: {results}")
         return render_template("search.html", q=results)
+
+    @app.route("/img_info")
+    def get_img_info():
+        image_name = request.args.get('imageName')
+        image_info = db.session.query(DImage).filter_by(img_path=image_name).first()
+        if image_info:
+            return jsonify({'positive': image_info.positive, 'negative': image_info.negative})
+        else:
+            return jsonify({'error': 'Image information not found'}), 404
 
     return app
 
