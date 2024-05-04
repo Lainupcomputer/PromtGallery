@@ -2,18 +2,60 @@
 {% block title %}Search{% endblock %}
 {% block content %}
 <!-- Search Form -->
-
 <form action="/search" method="post">
     <input name="search" id="search" type="text">
     <input type="submit">
 </form>
 
+<!-- Image Modal -->
+<div id="imageModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <div id="modalContent">
+            <h2>Positive:</h2>
+            <p id="positivePrompt"></p>
+            <h2>Negative:</h2>
+            <p id="negativePrompt"></p>
+        </div>
+    </div>
+</div>
+
 <!-- Show Images -->
 <div class="image-gallery">
     {% for image_path in q %}
-
-    <img src="{{ url_for('static', filename=image_path) }}" alt="Image">
+    <img src="{{ url_for('static', filename=image_path) }}" alt="Image" class="search-image" data-image="{{ image_path }}">
     {% endfor %}
 </div>
 
+
+<script>
+    var modal = document.getElementById('imageModal');
+    var span = document.getElementsByClassName("close")[0];
+
+    // close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks on an image, open the modal
+    var images = document.getElementsByClassName("search-image");
+    for (var i = 0; i < images.length; i++) {
+        images[i].addEventListener('click', function() {
+            var imageName = this.getAttribute('data-image');
+            fetchImageInfo(imageName);
+            modal.style.display = "block";
+        });
+    }
+
+    // Fetch image information
+    function fetchImageInfo(imageName) {
+        fetch('/img_info?imageName=' + imageName)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('positivePrompt').innerText = data.positive;
+                document.getElementById('negativePrompt').innerText = data.negative;
+            })
+            .catch(error => console.error('Error:', error));
+    }
+</script>
 {% endblock %}
